@@ -29,11 +29,14 @@ const STEPS = [
 export function AuthSteps() {
   const [current, setCurrent] = useState(0);
   const step = STEPS[current];
-  const isFirst = current === 0;
-  const isLast = current === STEPS.length - 1;
 
   return (
     <div className="mt-4">
+      {/* Hint */}
+      <p className="mb-2 text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed">
+        {step.hint}
+      </p>
+
       {/* Image */}
       <div className="rounded-t-lg overflow-hidden border border-b-0 border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-900">
         <div
@@ -52,43 +55,31 @@ export function AuthSteps() {
 
       {/* Tab nav */}
       <div className="flex items-stretch border border-neutral-200 dark:border-neutral-700 rounded-b-lg overflow-hidden divide-x divide-neutral-200 dark:divide-neutral-700">
-        <button
-          onClick={() => setCurrent((c) => c - 1)}
-          disabled={isFirst}
-          aria-label="Previous step"
-          className="px-3 py-2.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 disabled:opacity-20 disabled:cursor-not-allowed transition-colors bg-neutral-50 dark:bg-neutral-800/60 text-sm shrink-0"
-        >
-          ←
-        </button>
-
         {STEPS.map((s, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`flex-1 px-2 py-2.5 text-[11px] font-medium text-center transition-colors leading-tight ${
+            className={`flex-1 flex items-center justify-center gap-2 px-2 py-2.5 transition-colors ${
               i === current
                 ? "bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
-                : "bg-neutral-50 dark:bg-neutral-800/60 text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                : "bg-neutral-50 dark:bg-neutral-800/40 text-neutral-400 dark:text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-600 dark:hover:text-neutral-300"
             }`}
           >
-            {s.label}
+            <span
+              className={`inline-flex items-center justify-center w-4 h-4 rounded-full text-[9px] font-bold shrink-0 transition-colors ${
+                i === current
+                  ? "bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900"
+                  : "bg-neutral-200 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400"
+              }`}
+            >
+              {i + 1}
+            </span>
+            <span className="text-[11px] font-medium leading-tight">{s.label}</span>
           </button>
         ))}
 
-        <button
-          onClick={() => setCurrent((c) => c + 1)}
-          disabled={isLast}
-          aria-label="Next step"
-          className="px-3 py-2.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 disabled:opacity-20 disabled:cursor-not-allowed transition-colors bg-neutral-50 dark:bg-neutral-800/60 text-sm shrink-0"
-        >
-          →
-        </button>
       </div>
 
-      {/* Hint */}
-      <p className="mt-2 text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed">
-        {step.hint}
-      </p>
     </div>
   );
 }
