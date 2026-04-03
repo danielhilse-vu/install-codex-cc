@@ -15,6 +15,17 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Codex + Claude Code — Setup Guide",
   description: "How to install and use the Codex plugin for Claude Code on a remote Coder environment.",
+  openGraph: {
+    title: "Codex + Claude Code — Setup Guide",
+    description: "How to install and use the Codex plugin for Claude Code on a remote Coder environment.",
+    images: [{ url: "/share-image.png" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Codex + Claude Code — Setup Guide",
+    description: "How to install and use the Codex plugin for Claude Code on a remote Coder environment.",
+    images: ["/share-image.png"],
+  },
 };
 
 export default function RootLayout({

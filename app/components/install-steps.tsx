@@ -19,20 +19,25 @@ export function InstallSteps() {
   return (
     <div>
       {/* Environment toggle */}
-      <div className="inline-flex gap-px bg-neutral-200 dark:bg-neutral-700/50 rounded-lg p-0.5 mb-10">
-        {(["local", "coder"] as Env[]).map((e) => (
-          <button
-            key={e}
-            onClick={() => setEnv(e)}
-            className={`px-3.5 py-1.5 text-xs font-medium rounded-md transition-all ${
-              env === e
-                ? "bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-sm"
-                : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
-            }`}
-          >
-            {e === "coder" ? "Coder environment" : "Local"}
-          </button>
-        ))}
+      <div className="flex flex-col items-center gap-3 mb-10">
+        <p className="text-[11px] font-mono tracking-[0.18em] text-neutral-400 uppercase">
+          Where are you installing?
+        </p>
+        <div className="inline-flex gap-px bg-neutral-200 dark:bg-neutral-700/50 rounded-lg p-0.5">
+          {(["local", "coder"] as Env[]).map((e) => (
+            <button
+              key={e}
+              onClick={() => setEnv(e)}
+              className={`px-3.5 py-1.5 text-xs font-medium rounded-md transition-all ${
+                env === e
+                  ? "bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 shadow-sm"
+                  : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
+              }`}
+            >
+              {e === "local" ? "Local machine" : "Coder workspace"}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="space-y-12">

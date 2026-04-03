@@ -11,7 +11,8 @@ export function PluginInstallSteps() {
   return (
     <div>
       {/* Toggle */}
-      <div className="inline-flex gap-px bg-neutral-200 dark:bg-neutral-700/50 rounded-lg p-0.5 mb-6">
+      <div className="flex justify-center mb-6">
+      <div className="inline-flex gap-px bg-neutral-200 dark:bg-neutral-700/50 rounded-lg p-0.5">
         {(["terminal", "vscode"] as Mode[]).map((m) => (
           <button
             key={m}
@@ -28,6 +29,7 @@ export function PluginInstallSteps() {
           </button>
         ))}
       </div>
+      </div>
 
       {mode === "terminal" ? <TerminalPath /> : <VsCodePath />}
     </div>
@@ -36,23 +38,27 @@ export function PluginInstallSteps() {
 
 function TerminalPath() {
   return (
-    <>
-      <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-        Inside a Claude Code session, run these three commands in order.
-      </p>
-      <div className="space-y-2">
-        <CodeBlock
-          env="claude"
-          code="/plugin marketplace add openai/codex-plugin-cc"
-        />
+    <div className="space-y-7">
+      <VsCodeStep label="A">
+        Add the Codex marketplace to Claude Code.
+        <CodeBlock env="claude" code="/plugin marketplace add openai/codex-plugin-cc" />
+      </VsCodeStep>
+
+      <VsCodeStep label="B">
+        Install the plugin from the marketplace.
         <CodeBlock env="claude" code="/plugin install codex@openai-codex" />
+      </VsCodeStep>
+
+      <VsCodeStep label="C">
+        Reload plugins to activate it.
         <CodeBlock env="claude" code="/reload-plugins" />
-      </div>
-      <p className="mt-5 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-        Then run the setup wizard:
-      </p>
-      <CodeBlock env="claude" code="/codex:setup" />
-    </>
+      </VsCodeStep>
+
+      <VsCodeStep label="D">
+        Run the setup wizard.
+        <CodeBlock env="claude" code="/codex:setup" />
+      </VsCodeStep>
+    </div>
   );
 }
 
