@@ -1,4 +1,6 @@
 import { CodeBlock, InlineCommand } from "./components/code-block";
+import { PluginInstallSteps } from "./components/plugin-install-steps";
+import { AuthSteps } from "./components/auth-steps";
 
 export default function Home() {
   return (
@@ -6,106 +8,86 @@ export default function Home() {
 
       {/* Header */}
       <header className="mb-16">
-        <p className="text-xs font-mono tracking-widest text-neutral-400 uppercase mb-4">
-          Internal Guide
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 leading-snug">
+        <div className="flex items-center justify-between mb-5">
+          <p className="text-[11px] font-mono tracking-[0.18em] text-neutral-400 uppercase">
+            Internal Guide
+          </p>
+          <p className="text-[11px] font-mono text-neutral-400 dark:text-neutral-500">
+            Daniel Hilse · 04.03.2026
+          </p>
+        </div>
+        <h1 className="text-4xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 leading-tight">
           Codex + Claude Code
         </h1>
-        <p className="mt-3 text-neutral-500 dark:text-neutral-400 text-base leading-relaxed">
+        <p className="mt-4 text-neutral-500 dark:text-neutral-400 text-base leading-relaxed max-w-prose">
           How to install the Codex plugin for Claude Code and get started on a
           remote Coder environment.
         </p>
-        <div className="mt-6 border-t border-neutral-200 dark:border-neutral-800" />
       </header>
 
       {/* Steps */}
-      <div className="space-y-14">
+      <div className="space-y-12">
 
         {/* Step 1 */}
         <section>
-          <StepLabel n={1} />
-          <h2 className="mt-2 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-            Install Codex
-          </h2>
-          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            Codex is installed globally via npm. On a Coder environment this
-            requires <code className="font-mono text-neutral-700 dark:text-neutral-300">sudo</code>.
+          <StepHeading n={1}>Connect to your Coder workspace</StepHeading>
+          <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            SSH into your workspace from your local machine. Everything from
+            here runs inside Coder.
           </p>
-          <CodeBlock env="terminal" code="sudo npm install -g @openai/codex" />
+          <CodeBlock env="local" code="coder ssh <workspace-name>" />
         </section>
 
         {/* Step 2 */}
         <section>
-          <StepLabel n={2} />
-          <h2 className="mt-2 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-            Authenticate
-          </h2>
-          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            Because Coder runs headlessly, skip the browser-based login and use
-            device-code authentication instead.
+          <StepHeading n={2}>Install Codex</StepHeading>
+          <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Codex is installed globally via npm. On Coder this requires{" "}
+            <code className="font-mono text-[13px] px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 rounded">sudo</code>.
           </p>
-          <CodeBlock env="terminal" code="codex login --device-auth" />
-
-          <Callout>
-            <p className="text-sm leading-relaxed">
-              Codex will print a URL and a 9-character one-time code — for
-              example <span className="font-mono font-medium">XMOG-HPSSC</span>.
-              Open the URL in your local browser, sign in to your OpenAI account,
-              and enter the code when prompted. The CLI will confirm once the
-              device is authorized.
-            </p>
-            <div className="mt-4 space-y-1 text-xs font-mono text-neutral-400 dark:text-neutral-500">
-              <p>1. Open → https://auth.openai.com/codex/device</p>
-              <p>2. Enter your one-time code</p>
-              <p>3. Return here — the CLI finishes automatically</p>
-            </div>
-          </Callout>
-
-          <p className="mt-4 text-xs text-neutral-400 dark:text-neutral-500">
-            Never share your device code with anyone. It expires after 15 minutes.
-          </p>
+          <CodeBlock env="coder" code="sudo npm install -g @openai/codex" />
         </section>
 
         {/* Step 3 */}
         <section>
-          <StepLabel n={3} />
-          <h2 className="mt-2 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-            Install the Claude Code plugin
-          </h2>
-          <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            Inside a Claude Code session, run these three commands in order.
+          <StepHeading n={3}>Authenticate</StepHeading>
+          <p className="mt-3 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Because Coder runs headlessly, skip the browser-based login and use
+            device-code authentication instead.
           </p>
-          <div className="space-y-2">
-            <CodeBlock env="claude" code="/plugin marketplace add openai/codex-plugin-cc" />
-            <CodeBlock env="claude" code="/plugin install codex@openai-codex" />
-            <CodeBlock env="claude" code="/reload-plugins" />
-          </div>
-          <p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
-            Then run the setup wizard:
+          <CodeBlock env="coder" code="codex login --device-auth" />
+          <LoginOutput />
+          <AuthSteps />
+        </section>
+
+        {/* Step 4 */}
+        <section>
+          <StepHeading n={4}>Install the Claude Code plugin</StepHeading>
+          <p className="mt-3 mb-5 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+            Choose how you access Claude Code.
           </p>
-          <CodeBlock env="claude" code="/codex:setup" />
+          <PluginInstallSteps />
         </section>
 
         {/* Divider */}
-        <div className="border-t border-neutral-200 dark:border-neutral-800" />
+        <div className="h-px bg-neutral-200 dark:bg-neutral-800" />
 
         {/* Use cases */}
         <section>
-          <p className="text-xs font-mono tracking-widest text-neutral-400 uppercase mb-6">
+          <p className="text-[11px] font-mono tracking-[0.18em] text-neutral-400 uppercase mb-2">
             What you can do with it
           </p>
 
-          <div className="space-y-8">
+          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
             <UseCase
               command="/codex:review"
               title="Code review"
-              description="Codex reviews your uncommitted changes (or a branch diff) and returns feedback inline. Pass --base <ref> to compare against any branch or commit."
+              description="Reviews your uncommitted changes (or a branch diff) and returns feedback inline. Pass --base <ref> to compare against any branch or commit."
             />
             <UseCase
               command="/codex:adversarial-review"
               title="Pressure-test your approach"
-              description="Codex actively challenges your design decisions and surfaces assumptions you may have missed. Useful before a big merge."
+              description="Actively challenges your design decisions and surfaces assumptions you may have missed. Useful before a big merge."
             />
             <UseCase
               command="/codex:rescue"
@@ -116,13 +98,26 @@ export default function Home() {
         </section>
 
         {/* Footer note */}
-        <div className="border-t border-neutral-200 dark:border-neutral-800 pt-8">
+        <div className="border-t border-neutral-200 dark:border-neutral-800 pt-8 space-y-3">
           <p className="text-xs text-neutral-400 dark:text-neutral-500 leading-relaxed">
             The plugin uses your local Codex installation and authentication — no
             separate credentials needed. Work started here can be resumed in the
             Codex CLI with{" "}
-            <code className="font-mono">codex resume &lt;session-id&gt;</code>.
+            <code className="font-mono text-[11px] px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded">
+              codex resume &lt;session-id&gt;
+            </code>.
           </p>
+          <a
+            href="https://github.com/openai/codex-plugin-cc"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-neutral-400 dark:text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+            </svg>
+            openai/codex-plugin-cc
+          </a>
         </div>
 
       </div>
@@ -130,20 +125,61 @@ export default function Home() {
   );
 }
 
-/* ── Small shared components ── */
+/* ── Shared components ── */
 
-function StepLabel({ n }: { n: number }) {
+function StepHeading({ n, children }: { n: number; children: string }) {
   return (
-    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-neutral-300 dark:border-neutral-700 text-xs font-mono text-neutral-400 dark:text-neutral-500">
-      {n}
-    </span>
+    <div className="flex items-baseline gap-3">
+      <span className="font-mono text-[11px] font-semibold text-neutral-400 dark:text-neutral-600 tabular-nums shrink-0 tracking-wider">
+        0{n}
+      </span>
+      <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
+        {children}
+      </h2>
+    </div>
   );
 }
 
-function Callout({ children }: { children: React.ReactNode }) {
+function LoginOutput() {
   return (
-    <div className="mt-4 px-4 py-4 border-l-2 border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/50 rounded-r-lg">
-      {children}
+    <div className="mt-3 rounded-lg border border-amber-900/40 overflow-hidden">
+      <div className="px-4 py-3 bg-[#141410] font-mono text-sm leading-relaxed space-y-3">
+        <div>
+          <p className="text-amber-50 font-bold">Welcome to Codex [v0.118.0]</p>
+          <p className="text-neutral-500">OpenAI's command-line coding agent</p>
+        </div>
+        <div className="space-y-3">
+          <p className="text-amber-50 font-bold">
+            Follow these steps to sign in with ChatGPT using device code
+            authorization:
+          </p>
+          <div>
+            <p className="text-amber-50 font-bold">
+              1. Open this link in your browser and sign in to your account
+            </p>
+            <a
+              href="https://auth.openai.com/codex/device"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-500 hover:text-amber-400 transition-colors underline-offset-2 hover:underline"
+            >
+              https://auth.openai.com/codex/device
+            </a>
+          </div>
+          <div>
+            <p className="text-amber-50 font-bold">
+              2. Enter this one-time code{" "}
+              <span className="text-neutral-500 font-normal">
+                (expires in 15 minutes)
+              </span>
+            </p>
+            <p className="text-amber-500 font-bold">XSB5-AKY4F</p>
+          </div>
+        </div>
+        <p className="text-neutral-500">
+          Device codes are a common phishing target. Never share this code.
+        </p>
+      </div>
     </div>
   );
 }
@@ -158,12 +194,14 @@ function UseCase({
   description: string;
 }) {
   return (
-    <div>
-      <InlineCommand code={command} />
-      <h3 className="mt-1 text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-        {title}
-      </h3>
-      <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
+    <div className="py-5">
+      <div className="flex items-start justify-between gap-4">
+        <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+          {title}
+        </h3>
+        <InlineCommand code={command} />
+      </div>
+      <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
         {description}
       </p>
     </div>
