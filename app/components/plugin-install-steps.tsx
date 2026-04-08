@@ -47,6 +47,12 @@ function TerminalPath() {
       <VsCodeStep label="B">
         Install the plugin from the marketplace.
         <CodeBlock env="claude" code="/plugin install codex@openai-codex" />
+        <p className="text-xs text-neutral-400 dark:text-neutral-500">
+          <strong className="font-medium text-neutral-500 dark:text-neutral-400">Note (Coder workspaces):</strong>{" "}
+          If Claude says it can&apos;t find <code className="font-mono text-[11px] px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded">codex@openai-codex</code> in any marketplace, try{" "}
+          <code className="font-mono text-[11px] px-1 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded">/plugin install codex</code> instead.
+          This is likely because the marketplace wasn&apos;t added via the CLI and the UI flow already registered it differently.
+        </p>
       </VsCodeStep>
 
       <VsCodeStep label="C">
